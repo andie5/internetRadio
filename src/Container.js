@@ -4,10 +4,30 @@ const Container = () => {
   const sortedGenres = [...genres];
   sortedGenres.sort((a, b) => b.size - a.size);
 
+  let previousSize;
+  let initialSetup = true;
+
+  // Get the initial size for displaying the buttons
+  if (sortedGenres.length > 0 && initialSetup) {
+    previousSize = sortedGenres[0].size;
+    initialSetup = false;
+  }
+
   return (
     <div style={{ padding: 15 }}>
       {sortedGenres.map(item => {
-        return <ItemButton item={item} />;
+        // Check if the next item is bigger than the previous
+        const result =
+          item.size !== previousSize ? (
+            <>
+              <br />
+              <ItemButton item={item} />
+            </>
+          ) : (
+            <ItemButton item={item} />
+          );
+        previousSize = item.size;
+        return result;
       })}
     </div>
   );
